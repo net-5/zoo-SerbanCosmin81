@@ -4,49 +4,75 @@ using System.Text;
 
 namespace ZooHw
 {
-    class Zoo : ITransfer
+    class Zoo
     {
+
         private string zooName;
-        private List<Animals> animals; 
+        private Dictionary<string, string> animalsList = new Dictionary<string, string>();
+        public static string animalName;
+        private string favoriteFood;
+        public static int contor;
 
-        public List<Animals> ListOfAnimals
+        public Zoo(string name)
         {
-            get { return animals; }
-            private set { animals = value; }
+            this.zooName = name;
         }
 
-        public string ZooName
+        public Dictionary<string, string> AnimalsList
         {
-            get { return zooName; }
-            private set { zooName = value; }
-        }
-
-        public Zoo(string pName)
-        {
-            ZooName = pName;
-            this.ListOfAnimals = new List<Animals>();
-        }
-        public void PrintAnimalList()
-        {
-            Console.WriteLine($"The Zoo of {this.ZooName} have a number of {this.ListOfAnimals.Count} animals:\nList of animals:\n ");
-            foreach (Animals animal in this.ListOfAnimals)
+            get
             {
-                Console.WriteLine(animal.AnimalInfo());
+                return this.animalsList;
             }
-            Console.WriteLine();
         }
 
-        public void TransferAnimal(Zoo zoo, Animals pAnimal)
+        public void Eat()
+        { }
+
+        static void AddAnimal()
         {
-            zoo.ListOfAnimals.Add(pAnimal);
-            this.ListOfAnimals.Remove(pAnimal);
-            Console.WriteLine($"Tranfer FeedBack: \n{pAnimal.AnimalName} transfered from {this.ZooName} to {zoo.ZooName}");
+            animalName = "";
+            contor = 0;
         }
 
-        public void AddAnimalsToZoos(Animals pAnimal)
+        public void AddAnimal(string name, string food)
         {
-            this.ListOfAnimals.Add(pAnimal);
-            Console.WriteLine($"This animal {pAnimal.AnimalName} was added to this Zoo {zooName}");
+            animalName = name;
+            this.favoriteFood = food;
+            contor++;
+            this.animalsList.Add(name, food);
         }
+
+        public static int GetContor()
+        {
+            return contor;
+        }
+
+        public void Transfer(string animal)
+        {
+            if (this.AnimalsList.ContainsKey(animal))
+            {
+                Console.Write(this.AnimalsList.Remove(animal));
+                contor--;
+            }
+            else
+            {
+                Console.WriteLine("We don't have this animal in our garden, he was transfered.");
+            }
+
+        }
+
+        public void PresentZoo()
+        {
+            int num = 1;
+            Console.WriteLine("In our ZOO " + this.zooName + " we have " + contor + " animals, ordered like this: ");
+            foreach (var animal in this.AnimalsList)
+            {
+                Console.WriteLine(num + ". " + animal.Key + ", prefers to eat " + animal.Value);
+                num++;
+            }
+
+        }
+
     }
 }
